@@ -1,30 +1,10 @@
 const { statement, htmlStatement } = require("./statement");
-const plays = {
-  hamlet: { name: "Hamlet", type: "tragedy" },
-  "as-like": { name: "As You Like It", type: "comedy" },
-  othello: { name: "Othello", type: "tragedy" },
-};
 
-const invoices = {
-  customer: "BigCo",
-  performances: [
-    {
-      playID: "hamlet",
-      audience: 55,
-    },
-    {
-      playID: "as-like",
-      audience: 35,
-    },
-    {
-      playID: "othello",
-      audience: 40,
-    },
-  ],
-};
+const plays = require("./plays.json");
+const invoices = require("./invoices.json");
 
 test("statementの実行", () => {
-  expect(statement(invoices, plays)).toBe(`Statement for BigCo
+  expect(statement(invoices[0], plays)).toBe(`Statement for BigCo
  Hamlet: $650.00 (55 seats)
  As You Like It: $580.00 (35 seats)
  Othello: $500.00 (40 seats)
@@ -34,7 +14,7 @@ You earned 47 credits
 });
 
 test("htmlStatementの実行", () => {
-  expect(htmlStatement(invoices, plays)).toBe(`<h1>Statement for BigCo</h1>
+  expect(htmlStatement(invoices[0], plays)).toBe(`<h1>Statement for BigCo</h1>
 <table>
 <tr><th>play</th><th>seats</th><th>cost</th></tr>
   <tr><td>Hamlet</td><td>55</td><td>$650.00</td></tr>
