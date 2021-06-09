@@ -15,20 +15,11 @@ function createStatementData(invoice, plays) {
     const result = Object.assign({}, aPerformance);
     result.play = calulator.play;
     result.amount = calulator.amount;
-    result.volumeCredits = volumeCreditsFor(result);
+    result.volumeCredits = calulator.volumeCredits;
     return result;
   }
   function playFor(aPerformance) {
     return plays[aPerformance.playID];
-  }
-  function volumeCreditsFor(aPerformance) {
-    let result = 0;
-    // ボリューム得点のポイントを加算
-    result += Math.max(aPerformance.audience - 30, 0);
-    // 喜劇の時は10人につき、さらにポイントを加算
-    if ("comedy" === aPerformance.play.type)
-      result += Math.floor(aPerformance.audience / 5);
-    return result;
   }
   function totalAmount(data) {
     let result = 0;
@@ -72,6 +63,15 @@ class PerformanceCalculator {
       default:
         throw new Error(`unknown type: ${this.play.type}`);
     }
+    return result;
+  }
+  get volumeCredits() {
+    let result = 0;
+    // ボリューム得点のポイントを加算
+    result += Math.max(this.performance.audience - 30, 0);
+    // 喜劇の時は10人につき、さらにポイントを加算
+    if ("comedy" === this.play.type)
+      result += Math.floor(this.performance.audience / 5);
     return result;
   }
 }
